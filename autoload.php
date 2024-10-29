@@ -3,11 +3,20 @@ require 'vendor/autoload.php';
 
 function modelLoader($class)
 {
-	$result = str_replace("\\", "/", $class);
-	if (substr($result, 0, 3) == "App"){
-		$result[0] = strtolower($result[0]);
-	}
-	include ($result . '.php');
+    // Replace namespace separators with directory separators
+    $result = str_replace("\\", "/", $class);
+    
+    // Ensure the directory structure matches the namespace
+    $filePath = $result . '.php';
+    
+    // Check if the file exists before including it
+    if (file_exists($filePath)) {
+        include $filePath;
+    } else {
+        // Optionally, throw an error or log the issue
+        error_log("Autoload failed: Unable to find $filePath");
+    }
 }
 
+// Register the autoload function
 spl_autoload_register('modelLoader');

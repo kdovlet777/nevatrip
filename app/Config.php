@@ -11,7 +11,7 @@ class Config
     public static function get($args, $default = null)
     {
         if (self::$data === null) {
-            $dotenv = Dotenv::createImmutable(__DIR__);
+            $dotenv = Dotenv::createImmutable(__DIR__ . '/../');
             $dotenv->load();
             self::$data = $_ENV;
         }

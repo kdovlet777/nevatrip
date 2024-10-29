@@ -12,11 +12,11 @@ class DB
     public static function connection()
     {
         if (self::$dbc == NULL) {
-           self::$dbc = new PDO(
-               "mysql:host=" . Config::get('DBHOST') . ";dbname=" . Config::get('DBNAME') . ";charset=utf8",
-               Config::get('DBUSER'), 
-               Config::get('DBPWD')
-           );
+            self::$dbc = new PDO(
+               "mysql:host=db;dbname=" . Config::get('DB_NAME') . ";charset=utf8",
+               Config::get('DB_USERNAME'), 
+               Config::get('DB_PASSWORD')
+            );
         }
         
         return self::$dbc;
