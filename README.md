@@ -17,6 +17,16 @@
 | event_date    | DATETIME    | Дата и время события                           |
 | created       | DATETIME    | Дата и время создания заказа                   |
 
+### Команда SQL
+    ```sql
+    CREATE TABLE orders (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        event_id INT NOT NULL,
+        event_date DATETIME NOT NULL,
+        created DATETIME DEFAULT CURRENT_TIMESTAMP
+    );
+    ```
+
 ### Таблица `ticket_types`
 
 | Поле          | Тип         | Описание                                        |
@@ -24,6 +34,16 @@
 | id            | INT         | Уникальный идентификатор типа билета (первичный ключ) |
 | type_name     | VARCHAR(50) | Название типа билета (взрослый, детский, льготный, групповой) |
 | price         | DECIMAL(10,2) | Цена билета                                    |
+
+### Команда SQL
+
+    ```sql
+    CREATE TABLE ticket_types (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        type_name VARCHAR(50) NOT NULL,
+        price INT NOT NULL
+    );
+    ```
 
 ### Таблица `tickets`
 
@@ -33,6 +53,19 @@
 | order_id      | INT         | Идентификатор заказа, к которому принадлежит билет |
 | type_id       | INT         | Идентификатор типа билета                       |
 | barcode       | VARCHAR(120)| Уникальный штрих-код для каждого билета        |
+
+### Команда SQL
+
+    ```sql
+    CREATE TABLE tickets (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        order_id INT NOT NULL,
+        type_id INT NOT NULL,
+        barcode VARCHAR(120) NOT NULL UNIQUE,
+        FOREIGN KEY (order_id) REFERENCES orders(id),
+        FOREIGN KEY (type_id) REFERENCES ticket_types(id)
+    );
+    ```
 
 ## Основные функции
 
@@ -55,12 +88,15 @@
     ```bash
     git clone https://github.com/kdovlet777/nevatrip.git
     cd nevatrip
+    ```
 2. Настройте переменные окружения как показано в .env.example и создайте свой .env файл
 3. Запустите докер образ для работы сервера
     ```bash
-    docker-compose up -d
+    docker-compose up --build -d
+    ```
 4. Установите зависимости
     ```bash
     composer install
+    ```
 
 При открытии страницы обновляйте пока не увидете сообщение об успешном создании заказа
